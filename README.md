@@ -67,7 +67,7 @@ This system targets students, educators, and algorithm enthusiasts by making com
 🌻 [Princess Mae Delos Santos](https://github.com/princessdlssnts) <br>
 🌻 [Ma. Francezca Ramos](https://github.com/ramosfranz) <br>
 
-🌻 **Instructor:** Ms. Fatima Marie P. Agdon, MSCS <br>
+🌻 **Instructor:** [Ms. Fatima Marie P. Agdon, MSCS](https://github.com/marieemoiselle) <br>
 
 ---
 
