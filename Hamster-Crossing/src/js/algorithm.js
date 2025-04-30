@@ -517,30 +517,4 @@ function stopSearching() {
             scaledHeight
         );
     }
-    
-    function drawSeedGoal(goal) {
-        const goalX = goal.x * cellSize;
-        const goalY = goal.y * cellSize;
-    
-        const spriteWidth = 40, spriteHeight = 40, grassSx = 40, grassSy = 40;
-        const seedScaleFactor = Math.min(cellSize / 48, cellSize / 26);
-        const scaledWidth = 26 * seedScaleFactor;
-        const scaledHeight = 48 * seedScaleFactor;
-    
-        // clear the area where the seed will be drawn
-        aStarCtx.clearRect(goalX, goalY, cellSize, cellSize);
-        dijkstraCtx.clearRect(goalX, goalY, cellSize, cellSize);
-    
-        // redraw the background tile (e.g., grass)
-        aStarCtx.drawImage(spriteSheet, grassSx, grassSy, spriteWidth, spriteHeight, goalX, goalY, cellSize, cellSize);
-        dijkstraCtx.drawImage(spriteSheet, grassSx, grassSy, spriteWidth, spriteHeight, goalX, goalY, cellSize, cellSize);
-    
-        // draw the seed at the goal's position
-        const seedImage = seedImages[seedIndex];
-        aStarCtx.drawImage(seedImage, goalX + (cellSize - scaledWidth) / 2, goalY + (cellSize - scaledHeight) / 2, scaledWidth, scaledHeight);
-        dijkstraCtx.drawImage(seedImage, goalX + (cellSize - scaledWidth) / 2, goalY + (cellSize - scaledHeight) / 2, scaledWidth, scaledHeight);
-    
-        animateSeed(); // directly trigger the animation
-    }
-    
 }

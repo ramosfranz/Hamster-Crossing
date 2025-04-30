@@ -7,8 +7,6 @@ const start = { x: 0, y: 0 };
 let searchInProgress = false;
 let goal = { x: cols - 1, y: rows - 1 };
 let grid = [];
-const seedImages = [];
-let seedIndex = 0;
 
 
 // for initializing the canvases
@@ -16,53 +14,6 @@ const aStarCanvas = document.getElementById("aStarCanvas");
 const dijkstraCanvas = document.getElementById("dijkstraCanvas");
 const aStarCtx = aStarCanvas.getContext("2d");
 const dijkstraCtx = dijkstraCanvas.getContext("2d");
-
-// seed animation logic
-let seedVisible = true;
-let seedAnimationInterval;
-
-function loadSeedImages() {
-    const seedFiles = ["assets/images/seed_animation/seed1.png", "assets/images/seed_animation/seed2.png", "assets/images/seed_animation/seed3.png"];
-    seedImages.length = 0;
-    for (let file of seedFiles) {
-        const img = new Image();
-        img.src = file;
-        seedImages.push(img);
-    }
-}
-
-function animateSeed() {
-    if (!seedVisible) return;
-    seedIndex = (seedIndex + 1) % seedImages.length;
-    const seedImage = seedImages[seedIndex];
-    const goalX = goal.x * cellSize;
-    const goalY = goal.y * cellSize;
-
-    const spriteWidth = 40, spriteHeight = 40, grassSx = 40, grassSy = 40;
-    const seedScaleFactor = Math.min(cellSize / 48, cellSize / 26);
-    const scaledWidth = 26 * seedScaleFactor;
-    const scaledHeight = 48 * seedScaleFactor;
-
-    aStarCtx.clearRect(goalX, goalY, cellSize, cellSize);
-    dijkstraCtx.clearRect(goalX, goalY, cellSize, cellSize);
-
-    aStarCtx.drawImage(spriteSheet, grassSx, grassSy, spriteWidth, spriteHeight, goalX, goalY, cellSize, cellSize);
-    dijkstraCtx.drawImage(spriteSheet, grassSx, grassSy, spriteWidth, spriteHeight, goalX, goalY, cellSize, cellSize);
-
-    aStarCtx.drawImage(seedImage, goalX + (cellSize - scaledWidth) / 2, goalY + (cellSize - scaledHeight) / 2, scaledWidth, scaledHeight);
-    dijkstraCtx.drawImage(seedImage, goalX + (cellSize - scaledWidth) / 2, goalY + (cellSize - scaledHeight) / 2, scaledWidth, scaledHeight);
-}
-
-function startSeedAnimation() {
-    loadSeedImages();
-    seedVisible = true;
-    seedAnimationInterval = setInterval(animateSeed, 300);
-}
-
-function stopSeedAnimation() {
-    clearInterval(seedAnimationInterval);
-    seedVisible = false;
-}
 
 // create grid
 function initializeGrid() {
@@ -272,17 +223,6 @@ function getNeighbors({ x, y }) {
     if (y < rows - 1 && !grid[y + 1][x].wall) neighbors.push(grid[y + 1][x]);
     return neighbors;
 }
-
-function restartSeedAnimation() {
-    if (!goal) return;
-
-    // clear any existing animation frames to avoid multiple loops
-    cancelAnimationFrame(seedAnimationFrameId);
-
-    // restart the seed animation
-    animateSeed();
-}
-
 
 window.onload = function() {
     initializeGrid();
