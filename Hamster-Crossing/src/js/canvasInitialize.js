@@ -1,21 +1,28 @@
+/**
+ * Canvas and Grid Initialization
+ * This file handles the setup and interaction with the grid-based pathfinding visualization
+ */
+
+// Grid configuration
 const rows = 10;
 const cols = 10;
 const cellSize = 40;
 const waitSecondsSearch = 100;
 const waitSecondsPath = 200;
+
+// Initial positions
 const start = { x: 0, y: 0 };
-let searchInProgress = false;
 let goal = { x: cols - 1, y: rows - 1 };
 let grid = [];
+let searchInProgress = false;
 
-
-// for initializing the canvases
+// Canvas initialization
 const aStarCanvas = document.getElementById("aStarCanvas");
 const dijkstraCanvas = document.getElementById("dijkstraCanvas");
 const aStarCtx = aStarCanvas.getContext("2d");
 const dijkstraCtx = dijkstraCanvas.getContext("2d");
 
-// create grid
+// Initialize grid with random walls and place goal
 function initializeGrid() {
     grid = [];
     for (let y = 0; y < rows; y++) {
@@ -26,6 +33,10 @@ function initializeGrid() {
         grid.push(row);
     }
 
+    // Make sure start and goal positions are not walls
+    grid[start.y][start.x].wall = false;
+    
+    // Place goal in a valid position
     let goalPlaced = false;
     while (!goalPlaced) {
         const randomX = Math.floor(Math.random() * cols);
@@ -35,24 +46,27 @@ function initializeGrid() {
             goalPlaced = true;
         }
     }
-
-    grid[start.y][start.x].wall = false;
     grid[goal.y][goal.x].wall = false;
+    
+    // Draw the initial grid
     drawGrid();
 
-    const hamsterWidth = 69, hamsterHeight = 82;
-    const scaleFactor = Math.min(cellSize / hamsterHeight, cellSize / hamsterWidth);
-    const scaledWidth = hamsterWidth * scaleFactor;
-    const scaledHeight = hamsterHeight * scaleFactor;
+    // Place hamster at start position
+    drawHamsterAtStart();
 
-    aStarCtx.drawImage(hamsterImage, start.x * cellSize + (cellSize - scaledWidth) / 2, start.y * cellSize + (cellSize - scaledHeight) / 2, scaledWidth, scaledHeight);
-    dijkstraCtx.drawImage(hamsterImage, start.x * cellSize + (cellSize - scaledWidth) / 2, start.y * cellSize + (cellSize - scaledHeight) / 2, scaledWidth, scaledHeight);
+    // Start seed animation if implemented
+    if (typeof seedVisible !== 'undefined' && typeof startSeedAnimation === 'function') {
+        seedVisible = true;
+        startSeedAnimation();
+    }
 
-    seedVisible = true;
-    startSeedAnimation();
+    // Update warning message if implemented
+    if (typeof updateWarningMessage === 'function') {
+        updateWarningMessage();
+    }
 }
 
-// visuals of grid
+// Draw the grid with appropriate sprites
 function drawGrid() {
     aStarCtx.clearRect(0, 0, aStarCanvas.width, aStarCanvas.height);
     dijkstraCtx.clearRect(0, 0, dijkstraCanvas.width, dijkstraCanvas.height);
@@ -128,67 +142,69 @@ function drawGrid() {
                 }
             }
 
-            // draw the sprite on the grid
+            // Draw the sprite on the grid
             aStarCtx.drawImage(spriteSheet, sx, sy, spriteWidth, spriteHeight, cell.x * cellSize, cell.y * cellSize, cellSize, cellSize);
             dijkstraCtx.drawImage(spriteSheet, sx, sy, spriteWidth, spriteHeight, cell.x * cellSize, cell.y * cellSize, cellSize, cellSize);
-
-             // draw the hamster if this is the start cell
-             if (cell.x === start.x && cell.y === start.y) {
-                const hamsterWidth = 69, hamsterHeight = 82;
-                const scaleFactor = Math.min(cellSize / hamsterHeight, cellSize / hamsterWidth);
-                const scaledWidth = hamsterWidth * scaleFactor;
-                const scaledHeight = hamsterHeight * scaleFactor;
-
-            aStarCtx.drawImage(hamsterImage, start.x * cellSize + (cellSize - scaledWidth) / 2, start.y * cellSize + (cellSize - scaledHeight) / 2, scaledWidth, scaledHeight);
-            dijkstraCtx.drawImage(hamsterImage, start.x * cellSize + (cellSize - scaledWidth) / 2, start.y * cellSize + (cellSize - scaledHeight) / 2, scaledWidth, scaledHeight);
         }
     }
 }
+
+// Draw hamsters at the start position
+function drawHamsterAtStart() {
+    const hamsterWidth = 69, hamsterHeight = 82;
+    const scaleFactor = Math.min(cellSize / hamsterHeight, cellSize / hamsterWidth);
+    const scaledWidth = hamsterWidth * scaleFactor;
+    const scaledHeight = hamsterHeight * scaleFactor;
+
+    aStarCtx.drawImage(hamsterImage, start.x * cellSize + (cellSize - scaledWidth) / 2, start.y * cellSize + (cellSize - scaledHeight) / 2, scaledWidth, scaledHeight);
+    dijkstraCtx.drawImage(hamsterImage, start.x * cellSize + (cellSize - scaledWidth) / 2, start.y * cellSize + (cellSize - scaledHeight) / 2, scaledWidth, scaledHeight);
 }
-// clicking cells to toggle behavior (if wall or not)
+
+// Handle click events on canvas to toggle walls
 function handleCanvasClick(event, ctx) {
-    if (searchInProgress) return;  //prevent toggling when searching
+    if (searchInProgress) return;  // Prevent toggling when search is in progress
+    
     const rect = ctx.canvas.getBoundingClientRect();
     const x = Math.floor((event.clientX - rect.left) / cellSize);
     const y = Math.floor((event.clientY - rect.top) / cellSize);
 
-    // prevent toggling the start or goal cells
+    // Prevent toggling the start or goal cells
     if ((x === start.x && y === start.y) || (x === goal.x && y === goal.y)) return;
 
-    // toggle the wall property and redraw the grid
+    // Toggle the wall property and redraw the grid
     grid[y][x].wall = !grid[y][x].wall;
     drawGrid();
+    drawHamsterAtStart();
 }
 
-// click event listeners
-aStarCanvas.addEventListener('click', (event) => handleCanvasClick(event, aStarCtx));
-dijkstraCanvas.addEventListener('click', (event) => handleCanvasClick(event, dijkstraCtx));
-
+// Goal dragging functionality
 let draggingGoal = false;
+
 function handleCanvasMouseDown(event, ctx) {
-    if (searchInProgress) return; // disable dragging while searching
+    if (searchInProgress) return; // Disable dragging while searching
 
     const rect = ctx.canvas.getBoundingClientRect();
     const x = Math.floor((event.clientX - rect.left) / cellSize);
     const y = Math.floor((event.clientY - rect.top) / cellSize);
 
-    // if the clicked cell is a goal
+    // If the clicked cell is a goal
     if (x === goal.x && y === goal.y) {
         draggingGoal = true;
     }
 }
 
 function handleCanvasMouseMove(event, ctx) {
-    if (!draggingGoal || searchInProgress) return; // disable dragging while searching
+    if (!draggingGoal || searchInProgress) return; // Disable dragging while searching
 
     const rect = ctx.canvas.getBoundingClientRect();
     const x = Math.floor((event.clientX - rect.left) / cellSize);
     const y = Math.floor((event.clientY - rect.top) / cellSize);
 
-    // if the new cell is within bounds and not a wall/start cell
+    // If the new cell is within bounds and not a wall/start cell
     if (x >= 0 && x < cols && y >= 0 && y < rows && !grid[y][x].wall && (x !== start.x || y !== start.y)) {
         goal = { x, y };
         drawGrid();
+        drawHamsterAtStart();
     }
 }
 
@@ -196,17 +212,7 @@ function handleCanvasMouseUp() {
     draggingGoal = false;
 }
 
-
-// mouse event listeners to enable dragging
-aStarCanvas.addEventListener('mousedown', (event) => handleCanvasMouseDown(event, aStarCtx));
-aStarCanvas.addEventListener('mousemove', (event) => handleCanvasMouseMove(event, aStarCtx));
-aStarCanvas.addEventListener('mouseup', handleCanvasMouseUp);
-dijkstraCanvas.addEventListener('mousedown', (event) => handleCanvasMouseDown(event, dijkstraCtx));
-dijkstraCanvas.addEventListener('mousemove', (event) => handleCanvasMouseMove(event, dijkstraCtx));
-dijkstraCanvas.addEventListener('mouseup', handleCanvasMouseUp);
-
-
-// utility functions
+// Utility functions
 function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
@@ -224,6 +230,24 @@ function getNeighbors({ x, y }) {
     return neighbors;
 }
 
+// Set up event listeners
+function setupEventListeners() {
+    // Click event listeners for toggling walls
+    aStarCanvas.addEventListener('click', (event) => handleCanvasClick(event, aStarCtx));
+    dijkstraCanvas.addEventListener('click', (event) => handleCanvasClick(event, dijkstraCtx));
+
+    // Mouse event listeners for dragging the goal
+    aStarCanvas.addEventListener('mousedown', (event) => handleCanvasMouseDown(event, aStarCtx));
+    aStarCanvas.addEventListener('mousemove', (event) => handleCanvasMouseMove(event, aStarCtx));
+    aStarCanvas.addEventListener('mouseup', handleCanvasMouseUp);
+    
+    dijkstraCanvas.addEventListener('mousedown', (event) => handleCanvasMouseDown(event, dijkstraCtx));
+    dijkstraCanvas.addEventListener('mousemove', (event) => handleCanvasMouseMove(event, dijkstraCtx));
+    dijkstraCanvas.addEventListener('mouseup', handleCanvasMouseUp);
+}
+
+// Initialize everything when window loads
 window.onload = function() {
+    setupEventListeners();
     initializeGrid();
 };
