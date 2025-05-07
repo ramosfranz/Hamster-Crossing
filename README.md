@@ -57,23 +57,28 @@ This system targets students, educators, and algorithm enthusiasts by making com
 ---
 
 ## 🐹 Usage Instructions
-
+1. Select **Choose a Hamster** and pick your desired hamster.
+2. Select **Create Your Own Grid**, you will be directed to a new section.
+3. Start placing down sunflowers as they will act as walls the the hamster cannot go through.
+4. Click run algorithm and watch how each algorithm thinks and traverses the grid
+5. You additionally have the option to randomly genrate the maze on the grid by clicking **Randomly Generate Grid** on the main menu
+6. Click about to learn more about each algorithm.
 ---
 
 ## 🐹 Team Members
 
-🌻 [Aldrich Ryan Antony](https://github.com/Kryptiku) <br>
-🌻 [Homer Calalo](https://github.com/Homercalalo) <br>
-🌻 [Aaron Angelo Crisologo](https://github.com/AaronCrisologo) <br>
-🌻 [Princess Mae Delos Santos](https://github.com/princessdlssnts) <br>
-🌻 [Ma. Francezca Ramos](https://github.com/ramosfranz) <br>
+🐹 [Aldrich Ryan Antony](https://github.com/Kryptiku) <br>
+🐹 [Homer Calalo](https://github.com/Homercalalo) <br>
+🐹 [Aaron Angelo Crisologo](https://github.com/AaronCrisologo) <br>
+🐹 [Princess Mae Delos Santos](https://github.com/princessdlssnts) <br>
+🐹 [Ma. Francezca Ramos](https://github.com/ramosfranz) <br>
 
-🌻 **Instructor:** [Ms. Fatima Marie P. Agdon, MSCS](https://github.com/marieemoiselle) <br>
+
 
 ---
 
-## 🌻 Acknowledgment
+## 💖 Acknowledgment
 
-**ERM**
+❤️ **Instructor:** [Ms. Fatima Marie P. Agdon, MSCS](https://github.com/marieemoiselle) <br>
 
 ---
