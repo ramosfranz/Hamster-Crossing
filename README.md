@@ -81,4 +81,9 @@ This system targets students, educators, and algorithm enthusiasts by making com
 
 ❤️ **Instructor:** [Ms. Fatima Marie P. Agdon, MSCS](https://github.com/marieemoiselle) <br>
 
+❤️ We’d like to thank our course instructor, [Ms. Fatima Marie P. Agdon, MSCS](https://github.com/marieemoiselle), for her guidance and support throughout the development of this project. <br>
+
+❤️ Our team members have worked collaboratively to bring this project to life, each contributing their expertise and creativity. We also appreciate the opportunity to work on this project and learn from each other in the process. HAMU!!!! 🐹 <br>
+
+
 ---
