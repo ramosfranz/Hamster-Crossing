@@ -52,7 +52,8 @@ This system targets students, educators, and algorithm enthusiasts by making com
 ---
 
 ## 🌻 Installation Instructions
-
+1. Navigate to the directory `Hamster-Crossing/src`
+2. Launch the file `hamsterMenu.html`
 ---
 
 ## 🌻 Usage Instructions
