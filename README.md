@@ -43,7 +43,7 @@ This system targets students, educators, and algorithm enthusiasts by making com
 
 ---
 
-## 🌻 Technology Stack
+## 🎡 Technology Stack
 
 **Tools and Languages** <br>
 🌻 Frontend: HTML5, CSS3 <br>
@@ -56,11 +56,11 @@ This system targets students, educators, and algorithm enthusiasts by making com
 2. Launch the file `hamsterMenu.html`
 ---
 
-## 🌻 Usage Instructions
+## 🐹 Usage Instructions
 
 ---
 
-## 🌻 Team Members
+## 🐹 Team Members
 
 🌻 [Aldrich Ryan Antony](https://github.com/Kryptiku) <br>
 🌻 [Homer Calalo](https://github.com/Homercalalo) <br>
