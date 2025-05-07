@@ -58,7 +58,7 @@ This system targets students, educators, and algorithm enthusiasts by making com
 
 ## 🐹 Usage Instructions
 1. Select **Choose a Hamster** and pick your desired hamster.
-2. Select **Create Your Own Grid**, you will be directed to a new section.
+2. Select **Play Game**, you will be directed to a new section.
 3. Start placing down sunflowers as they will act as walls the the hamster cannot go through.
 4. Click run algorithm and watch how each algorithm thinks and traverses the grid
 5. You additionally have the option to randomly genrate the maze on the grid by clicking **Randomly Generate Grid** on the main menu
