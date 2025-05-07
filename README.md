@@ -4,7 +4,7 @@
 
 ## 🎡 Project Overview
 
-**Hamster Crossing** is a web-based interactive simulation that visually demonstrates and compares two path-finding algorithms: **A\***, **Dijkstra**, **Breadth-First Search**, **Depth-First Search**, and **Bellman-Ford Algorithm**.  
+**Hamster Crossing** is a web-based interactive simulation that visually demonstrates and compares different path-finding algorithms: **A\***, **Dijkstra**, **Breadth-First Search**, **Depth-First Search**, and **Bellman-Ford Algorithm**.  
 Users interact with a dynamic grid where a hamster (the subject) must reach a sunflower seed (the goal), navigating through user-defined or randomly generated barriers.
 
 Key Points: <br>
