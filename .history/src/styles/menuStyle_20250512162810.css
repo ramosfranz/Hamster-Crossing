@@ -1,0 +1,293 @@
+html, body {
+    overflow: hidden; 
+    font-family: "Jersey 20", sans-serif;
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    background-image:url(../assets/images/backgrounds/bg_try.gif), url(../assets/images/backgrounds/bg_tryA.gif), url(../assets/images/backgrounds/bg_hamu.png);
+    background-size: auto, auto, 20%;
+    background-repeat: auto, auto, space;
+    image-rendering: pixelated;
+}
+
+.home {
+    display: flex;
+    flex-direction: column;
+    justify-content: center; 
+    align-items: center;
+    height: 100%;
+    text-align: center;
+}
+
+/*Hamster Crossing Main Logo*/
+
+#logo {
+    width: 40%;
+    max-height: 100%; 
+    margin-bottom: 0.5%;
+    image-rendering: pixelated;
+}
+
+/* Pixel button styling */
+
+.pixelButton {
+    padding: 10px 5%;
+    margin-bottom: 3%;
+    font-size: 1.5rem;
+    color: #fff;
+    border: 5px solid #ff8e1c;
+    border-radius: 4px;
+    background: linear-gradient(to bottom, #f9a65a, #ffbc80);
+    box-shadow: 
+        0 0 0 3px #fff, 
+        0 6px #d36102;
+    cursor: pointer;
+    text-align: center;
+    font-family: "Jersey 20", sans-serif;
+    width: 100%;
+    transition: transform 0.1s ease, box-shadow 0.1s ease;
+    image-rendering: pixelated;
+}
+
+.pixelButton:hover {
+    background: linear-gradient(to bottom, #ffa9b8, #ff605f);
+    border-color: #ff1a14;
+}
+
+.pixelButton:active {
+    transform: translateY(4px);
+    box-shadow: 0 0 #000;
+}
+
+
+.menu {
+    margin-bottom: 20px;
+}
+
+ /* Additional styles for the gacha system */
+ .popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 100;
+}
+
+.popup.open {
+    display: flex;
+}
+
+.innerPopup {
+    background-color: #fff9e6;
+    border: 4px solid #d05e00;
+    border-radius: 10px;
+    padding: 20px;
+    width: 80%;
+    max-width: 600px;
+    position: relative; /* Added this to allow absolute positioning of the close button */
+}
+
+.popupHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.popupHeader h4 {
+    margin: 0;
+    font-size: 24px;
+    color: #8B4513;
+    text-align: center;
+}
+
+/* Close button for pop-up*/
+#closePopup {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background-color: #fff8e5;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0;
+    z-index: 101;
+}
+
+#closeIcon {
+    font-size: 20px;
+    color: #d05e00;
+    /* Text stroke effect for the X */
+    -webkit-text-stroke: 1px #d05e00;
+    font-weight: bold;
+}
+
+.hamsterSelection {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.hamsterChoice {
+    text-align: center;
+    cursor: pointer;
+    padding: 10px;
+    border-radius: 8px;
+    transition: all 0.3s;
+}
+
+.hamsterChoice:hover {
+    background-color: #ffe0b2;
+}
+
+.hcPic {
+    width: 80px;
+    height: 80px;
+    object-fit: contain;
+    transition: filter 0.3s;
+}
+
+.low-saturation {
+    filter: saturate(0.3) brightness(0.8);
+}
+
+/* Add this new CSS rule for buttons in the same row */
+
+.buttonRow {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.buttonRow .popupBtn {
+    flex: 1;
+    margin-top: 0;
+}
+
+/* Update the existing popupBtn style to remove the margin-top that would be redundant */
+.popupBtn {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    background-color: #8B4513;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-family: 'Jersey 20', sans-serif;
+    font-size: 18px;
+}
+.popupBtn:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+}
+
+.resultPopup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 200;
+}
+
+.resultBox {
+    background-color: #fff9e6;
+    border: 4px solid #8B4513;
+    border-radius: 10px;
+    padding: 20px;
+    width: 60%;
+    max-width: 400px;
+    text-align: center;
+}
+
+.resultCard {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 20px 0;
+}
+
+#resultMessage {
+    font-size: 20px;
+    margin-bottom: 15px;
+    color: #8B4513;
+}
+
+#resultImage {
+    width: 120px;
+    height: 120px;
+}
+
+
+/* Falling Hamsters animation*/
+#hamster {
+    position: absolute;
+    width: 13%;
+    top: -100px;
+    left: 50%;
+    transform: translateX(-50%);
+    animation: hamsterFall 13s linear infinite; /* 3s fall + 10s delay */
+    image-rendering: pixelated;
+    opacity: 0;
+}
+
+#berry {
+    position: absolute;
+    width: 13%;
+    top: -100px;
+    left: 35%; /* Positioned to the left of center */
+    transform: translateX(-50%);
+    animation: hamsterFall 13s linear infinite; /* Same animation timing */
+    image-rendering: pixelated;
+    opacity: 0;
+}
+
+#merry {
+    position: absolute;
+    width: 13%;
+    top: -100px;
+    left: 85%; /* Positioned to the left of center */
+    transform: translateX(-50%);
+    animation: hamsterFall 13s linear infinite; /* Same animation timing */
+    image-rendering: pixelated;
+    opacity: 0;
+}
+
+#mint {
+    position: absolute;
+    width: 13%;
+    top: -100px;
+    left: 20%; /* Positioned to the left of center */
+    transform: translateX(-50%);
+    animation: hamsterFall 13s linear infinite; /* Same animation timing */
+    image-rendering: pixelated;
+    opacity: 0;
+}
+
+@keyframes hamsterFall {
+    /* Fall happens in first 3s (23% of 13s) */
+    0% { top: -90vh; opacity: 0; }
+    2.3% { opacity: 1; }  /* ~0.3s in */
+    20% { opacity: 1; }   /* ~2.6s in */
+    23% { top: calc(100vh - 5vh); opacity: 0; } /* Fall ends at 3s */
+
+    /* Remain hidden for the next 10s (77% of animation) */
+    23.1% { top: -90vh; } /* Reset position (hidden) */
+    100% { top: -90vh; }  /* Stay hidden until restart */
+}

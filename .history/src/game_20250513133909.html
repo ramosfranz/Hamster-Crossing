@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Jersey+10+Charted&family=Jersey+20&family=Jersey+25+Charted&display=swap" rel="stylesheet">
+    <title>Hamster Crossing</title>
+    <link rel="icon" type="image/x-icon" href="assets/images/favicon.ico">
+    <link rel="stylesheet" href="styles/gameStyle.css">
+</head>
+<body>
+    <div class="header-buttons">
+        <a class="pixelButton" id="backButton" href="hamsterMenu.html">Back to Menu</a>
+        <button class="pixelButton" id="settingsButton">Settings</button>
+    </div>
+
+    <!-- Settings Popup -->
+    <div id="settingsPopup" class="popup">
+        <div class="popup-content">
+            <span class="close-popup">&times;</span>
+            <h3>Settings</h3>
+            
+            <div class="setting-item">
+                <label for="volumeSlider">Adjust Volume:</label>
+                <input type="range" id="volumeSlider" min="0" max="100" value="50" class="theme-slider">
+            </div>
+            
+            <div class="setting-item">
+                <label for="hamsterDropdown">Change Hamster:</label>
+                <select id="hamsterDropdown">
+                    <option value="hamster1">Default Hamster</option>
+                    <option value="hamster2">Speedy Hamster</option>
+                    <option value="hamster3">Colorful Hamster</option>
+                </select>
+            </div>
+            
+            <div class="setting-item">
+                <label>Number of Grids: <span class="grid-count-value">2</span></label>
+                <div class="grid-count-container">
+                    <input type="range" id="gridCount" min="1" max="5" value="2">
+                </div>
+            </div>
+            
+            <div id="gridSettings">
+                <!-- Grid settings will be added here dynamically -->
+            </div>
+            
+            <button class="pixelButton" id="applySettings">Apply Settings</button>
+        </div>
+    </div>
+    <div id="controls">
+        <button class="pixelButton" id="runButton">Run</button>
+        <button class="pixelButton" id="generateButton">Generate New Grid</button>
+        <button class="pixelButton" id="clearButton">Clear</button>
+        <button class="pixelButton" id="addWeightsButton">Add Random Weights</button>
+    </div>
+    
+    <button id="stopButton">Stop and Clear Searching</button>
+  
+    <div id="grids-container">
+        <!-- Grids will be added here dynamically -->
+    </div>
+
+    <script type="module" src="js/app.js"></script>
+</body>
+</html>

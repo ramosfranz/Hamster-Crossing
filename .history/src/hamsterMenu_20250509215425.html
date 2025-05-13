@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Jersey+10+Charted&family=Jersey+20&family=Jersey+25+Charted&display=swap" rel="stylesheet">
+    <title>Hamster Crossing</title>
+    <link rel="icon" type="image/x-icon" href="assets/images/favicon.ico">
+    <link rel="stylesheet" href="styles/menuStyle.css">
+    <style>
+        /* Additional styles for the gacha system */
+        .popup {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+        }
+        
+        .popup.open {
+            display: flex;
+        }
+        
+        .innerPopup {
+            background-color: #fff9e6;
+            border: 4px solid #8B4513;
+            border-radius: 10px;
+            padding: 20px;
+            width: 80%;
+            max-width: 600px;
+        }
+        
+        .popupHeader {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .popupHeader h4 {
+            margin: 0;
+            font-size: 24px;
+            color: #8B4513;
+        }
+        
+        .popupHeader button {
+            background: #ff6b6b;
+            border: 2px solid #8B4513;
+            border-radius: 5px;
+            width: 30px;
+            height: 30px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        
+        .hamsterSelection {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .hamsterChoice {
+            text-align: center;
+            cursor: pointer;
+            padding: 10px;
+            border-radius: 8px;
+            transition: all 0.3s;
+        }
+        
+        .hamsterChoice:hover {
+            background-color: #ffe0b2;
+        }
+        
+        .hcPic {
+            width: 80px;
+            height: 80px;
+            object-fit: contain;
+            transition: filter 0.3s;
+        }
+        
+        .low-saturation {
+            filter: saturate(0.3) brightness(0.8);
+        }
+        
+        .popupBtn {
+            display: block;
+            width: 100%;
+            margin-top: 10px;
+            padding: 10px;
+            background-color: #8B4513;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-family: 'Jersey 20', sans-serif;
+            font-size: 18px;
+        }
+        
+        .popupBtn:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+        }
+        
+        .resultPopup {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 200;
+        }
+        
+        .resultBox {
+            background-color: #fff9e6;
+            border: 4px solid #8B4513;
+            border-radius: 10px;
+            padding: 20px;
+            width: 60%;
+            max-width: 400px;
+            text-align: center;
+        }
+        
+        .resultCard {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 20px 0;
+        }
+        
+        #resultMessage {
+            font-size: 20px;
+            margin-bottom: 15px;
+            color: #8B4513;
+        }
+        
+        #resultImage {
+            width: 120px;
+            height: 120px;
+        }
+        
+        /* Animation for the falling hamster */
+        @keyframes hamsterFall {
+            0% {
+                transform: translateY(-100vh);
+            }
+            100% {
+                transform: translateY(100vh);
+            }
+        }
+        
+        @keyframes hamsterFrame {
+            0% {
+                background-position: 0 0;
+            }
+            100% {
+                background-position: -128px 0;
+            }
+        }
+        
+        #hamster {
+            position: fixed;
+            width: 64px;
+            height: 64px;
+            background-image: url('assets/images/hamster_falling/hamu_fall1.png');
+            background-size: cover;
+            z-index: 50;
+            right: 10%;
+            animation-play-state: paused;
+        }
+    </style>
+</head>
+<body>
+    <img id="hamster" src="public/hamster_falling/hamu_fall1.png" alt="Hamster Falling">
+
+    <div class="home">
+        <img id="logo" src="assets/images/logo.png" alt="logo">
+        <div class="menu">
+            <button class="pixelButton" id="openPopup">Choose a Hamster</button>
+            <button class="pixelButton" onclick="window.location.href='game.html';">Start Game</button>
+            <button class="pixelButton" id="aboutButton">About the Game</button>
+        </div>
+    </div>
+
+    <!-- Hamster selection pop-up -->
+    <div class="popup" id="popup">
+        <div class="innerPopup">
+            <div class="popupHeader">
+                <h4>Choose your hamster!</h4>
+                <button id="closePopup">X</button>
+            </div>
+            <div class="hamsterSelection">
+                <div class="hamsterChoice">
+                    <img src="assets/images/selection_sprites/HS_hamu.png" class="hcPic" id="hs_hamu"> <br>Hamu
+                </div>
+                <div class="hamsterChoice">
+                    <img src="assets/images/selection_sprites/HS_merry.png" class="hcPic" id="hs_merry"> <br>Merry
+                </div>
+                <div class="hamsterChoice">
+                    <img src="assets/images/selection_sprites/HS_berry.png" class="hcPic" id="hs_berry"> <br>Berry
+                </div>
+                <div class="hamsterChoice">
+                    <img src="assets/images/selection_sprites/HS_mint.png" class="hcPic" id="hs_mint"> <br>Mint
+                </div>
+                <div class="hamsterChoice">
+                    <img src="assets/images/selection_sprites/HS_UNKNOWN.png" class="hcPic" id="hs_hamuStar"> <span id="hamuStarName">???</span>
+                </div>
+                <div class="hamsterChoice">
+                    <img src="assets/images/selection_sprites/HS_UNKNOWN.png" class="hcPic" id="hs_chiikawa"> <span id="chiikawaName">???</span>
+                </div>
+            </div>
+            <button class="popupBtn" id="rollButton">Roll</button>
+            <button class="popupBtn" id="chooseHamster" disabled>Choose a hamster</button>
+        </div>
+        
+        <!-- Result pop-up -->
+        <div class="resultPopup" id="resultPopup">
+            <div class="resultBox">
+                <div class="popupHeader">
+                    <h4>Result</h4>
+                    <button id="closeResultPopup">X</button>
+                </div>
+                <div class="resultCard">
+                    <p id="resultMessage"></p>
+                    <img id="resultImage" class="hcPic" />
+                </div>
+            </div>
+        </div>
+    </div>
+    
+
+    
+    <script src="js/popup/gachaPopUp.js"></script>
+    <script src="js/popup/aboutPopUp.js"></script>
+</body>
+</html>
