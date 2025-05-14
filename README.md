@@ -61,7 +61,7 @@ This system targets students, educators, and algorithm enthusiasts by making com
 2. Select **Play Game**, you will be directed to a new section.
 3. Start placing down sunflowers as they will act as walls the the hamster cannot go through.
 4. Click run algorithm and watch how each algorithm thinks and traverses the grid
-5. You additionally have the option to randomly genrate the maze on the grid by clicking **Randomly Generate Grid** on the main menu
+5. You additionally have the option to randomly genrate the maze on the grid by clicking **Generate New Grid** on the pathfinding page.
 6. Click about to learn more about each algorithm.
 ---
 
