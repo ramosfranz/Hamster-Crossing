@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Jersey+10+Charted&family=Jersey+20&family=Jersey+25+Charted&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>Hamster Crossing</title>
+    <link rel="icon" type="image/x-icon" href="assets/images/favicon.ico">
+    <link rel="stylesheet" href="styles/menuStyle.css">
+</head>
+<body>
+    <img id="hamster" src="../src/public/hamster_falling/hamu_fall1.png" alt="Hamster Falling">
+    <img id="berry" src="../src/public/hamster_falling/berry_fall1.png" alt="Berry Falling">
+    <img id="merry" src="../src/public/hamster_falling/merry_fall1.png" alt="Merry Falling">
+    <img id="mint" src="../src/public/hamster_falling/mint_fall1.png" alt="Mint Falling">
+    
+    <div class="home">
+        <img id="logo" src="assets/images/logo.png" alt="logo">
+        <div class="menu">
+            <button class="pixelButton" id="openPopup">Choose a Hamster</button>
+            <button class="pixelButton" id="startGameButton">Start Game</button>
+            <button class="pixelButton" id="aboutButton">About the Game</button>
+        </div>
+    </div>
+
+    <!-- Hamster selection pop-up -->
+    <div class="popup" id="popup">
+        <div class="innerPopup">
+            <button class="closePopup" id="closeGachaPopup"><i id="closeIcon" class="fa-solid fa-xmark"></i></button>
+            <div class="popupHeader">
+                <h4>Choose your hamster!</h4>
+            </div>
+            <div class="hamsterSelection">
+                <div class="hamsterChoice">
+                    <img src="assets/images/selection_sprites/HS_hamu.png" class="hcPic" id="hs_hamu"> <br>Hamu
+                </div>
+                <div class="hamsterChoice">
+                    <img src="assets/images/selection_sprites/HS_merry.png" class="hcPic" id="hs_merry"> <br>Merry
+                </div>
+                <div class="hamsterChoice">
+                    <img src="assets/images/selection_sprites/HS_berry.png" class="hcPic" id="hs_berry"> <br>Berry
+                </div>
+                <div class="hamsterChoice">
+                    <img src="assets/images/selection_sprites/HS_mint.png" class="hcPic" id="hs_mint"> <br>Mint
+                </div>
+                <div class="hamsterChoice">
+                    <img src="assets/images/selection_sprites/HS_UNKNOWN.png" class="hcPic" id="hs_hamuStar"><br> <span id="hamuStarName">???</span>
+                </div>
+                <div class="hamsterChoice">
+                    <img src="assets/images/selection_sprites/HS_UNKNOWN.png" class="hcPic" id="hs_chiikawa"><br><span id="chiikawaName">???</span>
+                </div>
+            </div>
+            <div class="buttonRow">
+                <button class="popupBtn"  id="rollButton">Roll</button>
+                <button class="popupBtn" id="chooseHamster" disabled>Choose a hamster</button>
+            </div>
+        </div>
+        
+        <!-- Result pop-up -->
+        <div class="resultPopup" id="resultPopup">
+            <div class="resultBox">
+                <button class = "closePopup" id="closeResultPopup"><i id="closeIcon" class="fa-solid fa-xmark"></i></button>
+                <div class="popupHeader">
+                    <h4>Result</h4>
+                </div>
+                <div class="resultCard">
+                    <p id="resultMessage"></p>
+                    <img id="resultImage" class="hcPic" />
+                </div>
+            </div>
+        </div>
+    </div>
+    <audio id="bgMusic" src="assets/sounds/main.mp3" autoplay muted loop></audio>
+    <script type= "module" src="js/popup/gachaPopUp.js"></script>
+    <script type= "module" src="js/popup/aboutPopUp.js"></script>
+    <script src="js/animation/menuAnimation.js"></script>
+    <script src="js/manager/themeManager.js"></script>
+</body>
+</html>
