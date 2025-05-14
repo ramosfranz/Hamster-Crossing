@@ -4,7 +4,7 @@
 
 ## 🎡 Project Overview
 
-**Hamster Crossing** is a web-based interactive simulation that visually demonstrates and compares two path-finding algorithms: **A\***, **Dijkstra**, **Breadth-First Search**, **Depth-First Search**, and **Bellman-Ford Algorithm**.  
+**Hamster Crossing** is a web-based interactive simulation that visually demonstrates and compares different path-finding algorithms: **A\***, **Dijkstra**, **Breadth-First Search**, **Depth-First Search**, and **Bellman-Ford Algorithm**.  
 Users interact with a dynamic grid where a hamster (the subject) must reach a sunflower seed (the goal), navigating through user-defined or randomly generated barriers.
 
 Key Points: <br>
@@ -43,7 +43,7 @@ This system targets students, educators, and algorithm enthusiasts by making com
 
 ---
 
-## 🌻 Technology Stack
+## 🎡 Technology Stack
 
 **Tools and Languages** <br>
 🌻 Frontend: HTML5, CSS3 <br>
@@ -52,27 +52,38 @@ This system targets students, educators, and algorithm enthusiasts by making com
 ---
 
 ## 🌻 Installation Instructions
+1. Navigate to the directory `Hamster-Crossing/src`
+2. Launch the file `hamsterMenu.html`
+---
+
+## 🐹 Usage Instructions
+1. Select **Choose a Hamster** and pick your desired hamster.
+2. Select **Play Game**, you will be directed to a new section.
+3. Start placing down sunflowers as they will act as walls the the hamster cannot go through.
+4. Click run algorithm and watch how each algorithm thinks and traverses the grid
+5. You additionally have the option to randomly genrate the maze on the grid by clicking **Randomly Generate Grid** on the main menu
+6. Click about to learn more about each algorithm.
+---
+
+## 🐹 Team Members
+
+🐹 [Aldrich Ryan Antony](https://github.com/Kryptiku) <br>
+🐹 [Homer Calalo](https://github.com/Homercalalo) <br>
+🐹 [Aaron Angelo Crisologo](https://github.com/AaronCrisologo) <br>
+🐹 [Princess Mae Delos Santos](https://github.com/princessdlssnts) <br>
+🐹 [Ma. Francezca Ramos](https://github.com/ramosfranz) <br>
+
+
 
 ---
 
-## 🌻 Usage Instructions
+## 💖 Acknowledgment
 
----
+❤️ **Instructor:** [Ms. Fatima Marie P. Agdon, MSCS](https://github.com/marieemoiselle) <br>
 
-## 🌻 Team Members
+❤️ We’d like to thank our course instructor, [Ms. Fatima Marie P. Agdon, MSCS](https://github.com/marieemoiselle), for her guidance and support throughout the development of this project. <br>
 
-🌻 [Aldrich Ryan Antony](https://github.com/Kryptiku) <br>
-🌻 [Homer Calalo](https://github.com/Homercalalo) <br>
-🌻 [Aaron Angelo Crisologo](https://github.com/AaronCrisologo) <br>
-🌻 [Princess Mae Delos Santos](https://github.com/princessdlssnts) <br>
-🌻 [Ma. Francezca Ramos](https://github.com/ramosfranz) <br>
+❤️ Our team members have worked collaboratively to bring this project to life, each contributing their expertise and creativity. We also appreciate the opportunity to work on this project and learn from each other in the process. HAMU!!!! 🐹 <br>
 
-🌻 **Instructor:** [Ms. Fatima Marie P. Agdon, MSCS](https://github.com/marieemoiselle) <br>
-
----
-
-## 🌻 Acknowledgment
-
-**ERM**
 
 ---
