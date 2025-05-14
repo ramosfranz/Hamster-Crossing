@@ -1,6 +1,7 @@
 import { settings } from '../manager/stateManager.js';
 import { renderGrids } from '../manager/domManager.js';
 import ThemeManager from '../manager/themeManager.js';
+import audioManager from '../manager/audioManager.js';
 
 const domElements = {
     settingsButton: document.getElementById('settingsButton'),
@@ -9,6 +10,7 @@ const domElements = {
     applySettings: document.getElementById('applySettings'),
     gridCountInput: document.getElementById('gridCount'),
     gridSettings: document.getElementById('gridSettings'),
+    volumeSlider: document.getElementById('volumeSlider'),
     hamsterDropdown: document.getElementById('hamsterDropdown'),
     slider: document.querySelector('.theme-slider')
 };
@@ -32,13 +34,58 @@ function updateSliderBackground() {
     slider.style.background = `linear-gradient(to right, var(--gradient) 0%, var(--gradient) ${percentage}%, rgba(255, 255, 255, 0.2) ${percentage}%, rgba(255, 255, 255, 0.2) 100%)`;
 }
 
-
 slider.addEventListener('input', updateSliderBackground);
 updateSliderBackground(); // Initial call on load
-
 function updateSettingsUI() {
+    domElements.volumeSlider.value = settings.volume;
+    domElements.hamsterDropdown.value = settings.hamster;
     domElements.gridCountInput.value = settings.gridCount;
-    updateGridSettingsUI(); 
+    updateGridSettingsUI();
+    updateHamsterDropdown(); 
+}
+
+
+// Add this new function to update the hamster dropdown
+function updateHamsterDropdown() {
+    // Clear existing options
+    domElements.hamsterDropdown.innerHTML = '';
+    
+    // Get unlocked status from sessionStorage
+    const hamuStarUnlocked = JSON.parse(sessionStorage.getItem("hamuStarUnlocked")) || false;
+    const chiikawaUnlocked = JSON.parse(sessionStorage.getItem("chiikawaUnlocked")) || false;
+    
+    // Always available hamsters
+    const baseHamsters = [
+        { id: 'hamu', name: 'Hamu' },
+        { id: 'merry', name: 'Merry' },
+        { id: 'berry', name: 'Berry' },
+        { id: 'mint', name: 'Mint' }
+    ];
+    
+    // Special hamsters that might be unlocked
+    const specialHamsters = [];
+    if (hamuStarUnlocked) {
+        specialHamsters.push({ id: 'hamuStar', name: 'Hamu STAR' });
+    }
+    if (chiikawaUnlocked) {
+        specialHamsters.push({ id: 'chiikawa', name: 'Chiikawa' });
+    }
+    
+    // Combine all available hamsters
+    const availableHamsters = [...baseHamsters, ...specialHamsters];
+    
+    // Populate dropdown
+    availableHamsters.forEach(hamster => {
+        const option = document.createElement('option');
+        option.value = hamster.id;
+        option.textContent = hamster.name;
+        domElements.hamsterDropdown.appendChild(option);
+    });
+    
+    // Set current selection
+    if (settings.hamster) {
+        domElements.hamsterDropdown.value = settings.hamster;
+    }
 }
 
 function updateGridSettingsUI() {
@@ -51,66 +98,60 @@ function updateGridSettingsUI() {
     const row2 = document.createElement('div');
     row2.className = 'grid-selection-row';
 
-    const selects = [];
-
     for (let i = 0; i < 5; i++) {
         const gridDiv = document.createElement('div');
         gridDiv.className = `grid-selection-item ${i >= count ? 'disabled' : ''}`;
-
+        
         const label = document.createElement('label');
         label.textContent = `Grid ${String.fromCharCode(65 + i)}:`;
-
+        
         const select = document.createElement('select');
         select.id = `gridAlgorithm${i}`;
         select.disabled = i >= count;
-        selects.push(select); // Store for post-population processing
 
+        algorithms.forEach(algorithm => {
+            const option = document.createElement('option');
+            option.value = algorithm.id;
+            option.textContent = algorithm.name;
+            select.appendChild(option);
+        });
+        
+        if (settings.gridAlgorithms[i]) select.value = settings.gridAlgorithms[i];
+        
         gridDiv.appendChild(label);
         gridDiv.appendChild(select);
+
         if (i < 3) row1.appendChild(gridDiv);
         else row2.appendChild(gridDiv);
     }
 
     domElements.gridSettings.appendChild(row1);
     domElements.gridSettings.appendChild(row2);
-
-    // Populate options after building all dropdowns
-    for (let i = 0; i < selects.length; i++) {
-        const select = selects[i];
-        const isDisabled = select.disabled;
-        if (isDisabled) continue;
-
-        const used = selects
-            .map(s => s.value)
-            .filter((val, idx) => idx !== i && val); // Already selected in others
-
-        algorithms.forEach(algorithm => {
-            const option = document.createElement('option');
-            option.value = algorithm.id;
-            option.textContent = algorithm.name;
-            if (used.includes(algorithm.id)) option.disabled = true;
-            select.appendChild(option);
-        });
-
-        const defaultValue = settings.gridAlgorithms[i];
-        if (defaultValue && !used.includes(defaultValue)) {
-            select.value = defaultValue;
-        } else {
-            select.selectedIndex = 0;
-        }
-
-    }
 }
 
 function applyNewSettings() {
     console.log("Applying new settings...");
     
     try {
-        // Update grid count
+        // Update volume
+        settings.volume = parseInt(domElements.volumeSlider.value);
+        console.log("New volume:", settings.volume);
+        
+        // Update hamster - validate it's still available
+        const selectedHamster = domElements.hamsterDropdown.value;
+        const availableOptions = Array.from(domElements.hamsterDropdown.options).map(opt => opt.value);
+        if (availableOptions.includes(selectedHamster)) {
+            settings.hamster = selectedHamster;
+            console.log("New hamster:", settings.hamster);
+        } else {
+            settings.hamster = 'hamu';
+            console.warn("Selected hamster no longer available, falling back to default");
+        }
+        
+        // Update grid settings
         settings.gridCount = parseInt(domElements.gridCountInput.value);
         console.log("New grid count:", settings.gridCount);
         
-        // Update algorithms
         settings.gridAlgorithms = [];
         for (let i = 0; i < settings.gridCount; i++) {
             const select = document.getElementById(`gridAlgorithm${i}`);
@@ -120,14 +161,44 @@ function applyNewSettings() {
             }
         }
 
-        renderGrids();           // ← First render
+    
+        // Apply hamster theme - this should trigger a full reinitialization
+        ThemeManager.selectedHamster = settings.hamster;
+        console.log("Hamster theme updated");
         
+         // Apply audio settings
+        audioManager.setVolume(settings.volume);
+        console.log("Audio volume updated");
+        
+
+        // Save settings
+        if (settings.save && typeof settings.save === 'function') {
+            settings.save();
+            console.log("Settings saved");
+        } else {
+            console.warn("settings.save() not available");
+        }
+
+
+        
+        // Close the popup
         domElements.settingsPopup.style.display = 'none';
         console.log("Settings applied successfully");
     } catch (error) {
         console.error("Error applying settings:", error);
     }
 }
+document.addEventListener('themeChanged', () => {
+    updateHamsterDropdown();
+});
+
+// Add event listener for volume changes
+function setupVolumeControls() {
+    domElements.volumeSlider.addEventListener('input', (e) => {
+        audioManager.setVolume(parseInt(e.target.value));
+    });
+}
+
 
 export function setupSettingsEventListeners() {
     // Debug: Verify elements exist
@@ -156,6 +227,8 @@ export function setupSettingsEventListeners() {
         console.log("Grid count changed");
         updateGridSettingsUI();
     });
+
+    setupVolumeControls();
 
     window.addEventListener('click', (event) => {
         if (event.target === domElements.settingsPopup) {

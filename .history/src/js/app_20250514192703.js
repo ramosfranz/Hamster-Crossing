@@ -3,6 +3,8 @@ import { setupEventListeners, renderGrids } from './manager/domManager.js';
 import { setupSettingsEventListeners } from './popup/settingsPopUp.js';
 import { drawGrid, initializeVisualizer } from './animation/visualizer.js';
 import { loadSeedImages, startSeedAnimation } from './animation/seedAnimation.js';
+import audioManager from './manager/audioManager.js';
+import { settings } from './manager/stateManager.js';
 
 export function init() {
     loadSeedImages(() => {
@@ -14,6 +16,7 @@ export function init() {
     initializeVisualizer();
     renderGrids();
     drawGrid();
+    settings.load(); 
     
     
     window.addEventListener('resize', () => {

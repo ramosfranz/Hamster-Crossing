@@ -19,7 +19,13 @@ const domElements = {
 };
 
 export function setupEventListeners() {
-    domElements.runButton.addEventListener('click', runAlgorithms);
+    domElements.runButton.addEventListener('click', () => {
+    if (searchInProgress) {
+        stopSearching(); // Will stop the animation
+    } else {
+        runAlgorithms(); // Will start the animation
+    }
+});
     domElements.generateButton.addEventListener('click', () => {
         setupCanvasEventListeners();
         generateRandomGrid();
@@ -39,6 +45,21 @@ export function setupEventListeners() {
             drawGrid();
         }, 0);
     });
+
+   /* domElements.settingsButton.addEventListener('click', () => {
+        domElements.settingsPopup.style.display = 'block';
+        updateSettingsUI();
+    });
+
+    domElements.closePopup.addEventListener('click', () => {
+        domElements.settingsPopup.style.display = 'none';
+    });
+
+    window.addEventListener('click', (event) => {
+        if (event.target === domElements.settingsPopup) {
+            domElements.settingsPopup.style.display = 'none';
+        }
+    }); */
 
     window.addEventListener('resize', () => {
         drawGrid();
@@ -87,23 +108,12 @@ export function renderGrids() {
         timers[gridId] = timer;
     }
 
-     updateHeadingSize(); 
     // Use setTimeout to ensure DOM is fully updated
     setTimeout(() => {
         setupCanvasEventListeners();
         drawGrid();
     }, 0);
 }
-
-function updateHeadingSize() {
-    const visibleGrids = document.querySelectorAll('#grids-container .canvas-container').length;
-    const headings = document.querySelectorAll('#grids-container .canvas-container h3');
-
-    headings.forEach(heading => {
-        heading.style.fontSize = visibleGrids > 3 ? '1.4rem' : '2rem';
-    });
-}
-
 
 window.addEventListener('resize', () => {
     renderGrids();
@@ -203,22 +213,20 @@ function handleCanvasMouseUp() {
     draggingGoal = false;
 }
 
-
 async function runAlgorithms() {
-    domElements.runButton.textContent = 'Running...';
-    domElements.runButton.disabled = true;
     setSearchInProgress(true);
-    resetTimers();
+    domElements.runButton.textContent = 'Stop';
     
+    resetTimers();
+
     const promises = [];
     for (let i = 0; i < settings.gridCount; i++) {
         const algorithmId = settings.gridAlgorithms[i];
         const gridId = `${algorithmId}_${i}`;
-        
-        // Ensure we have valid context and timer
+
         const canvasContext = ctx[gridId];
         const timerElement = timers[gridId];
-        
+
         if (!canvasContext || !timerElement) continue;
 
         switch(algorithmId) {
@@ -239,16 +247,14 @@ async function runAlgorithms() {
                 break;
         }
     }
-    
+
     await Promise.all(promises);
-    domElements.runButton.disabled = false;
-    domElements.runButton.textContent = 'Run';
     setSearchInProgress(false);
+    domElements.runButton.textContent = 'Run';
 }
 
+
 function stopSearching() {
-    domElements.runButton.disabled = false;
-    domElements.runButton.textContent = 'Run';
     setSearchInProgress(false);
     drawGrid();
 }

@@ -32,7 +32,6 @@ function updateSliderBackground() {
     slider.style.background = `linear-gradient(to right, var(--gradient) 0%, var(--gradient) ${percentage}%, rgba(255, 255, 255, 0.2) ${percentage}%, rgba(255, 255, 255, 0.2) 100%)`;
 }
 
-
 slider.addEventListener('input', updateSliderBackground);
 updateSliderBackground(); // Initial call on load
 
@@ -51,7 +50,8 @@ function updateGridSettingsUI() {
     const row2 = document.createElement('div');
     row2.className = 'grid-selection-row';
 
-    const selects = [];
+    // Keep track of already selected algorithms to disable them in each grid
+    const selectedAlgorithms = settings.gridAlgorithms || [];
 
     for (let i = 0; i < 5; i++) {
         const gridDiv = document.createElement('div');
@@ -63,65 +63,64 @@ function updateGridSettingsUI() {
         const select = document.createElement('select');
         select.id = `gridAlgorithm${i}`;
         select.disabled = i >= count;
-        selects.push(select); // Store for post-population processing
+
+        // Disable selected algorithms in other grids
+        algorithms.forEach(algorithm => {
+            const option = document.createElement('option');
+            option.value = algorithm.id;
+            option.textContent = algorithm.name;
+
+            // If the algorithm has already been selected in another grid, disable it
+            if (selectedAlgorithms.includes(algorithm.id)) {
+                option.disabled = true;
+            }
+
+            select.appendChild(option);
+        });
+
+        // Set the selected algorithm for this grid if available
+        if (settings.gridAlgorithms[i]) select.value = settings.gridAlgorithms[i];
 
         gridDiv.appendChild(label);
         gridDiv.appendChild(select);
+
         if (i < 3) row1.appendChild(gridDiv);
         else row2.appendChild(gridDiv);
     }
 
     domElements.gridSettings.appendChild(row1);
     domElements.gridSettings.appendChild(row2);
-
-    // Populate options after building all dropdowns
-    for (let i = 0; i < selects.length; i++) {
-        const select = selects[i];
-        const isDisabled = select.disabled;
-        if (isDisabled) continue;
-
-        const used = selects
-            .map(s => s.value)
-            .filter((val, idx) => idx !== i && val); // Already selected in others
-
-        algorithms.forEach(algorithm => {
-            const option = document.createElement('option');
-            option.value = algorithm.id;
-            option.textContent = algorithm.name;
-            if (used.includes(algorithm.id)) option.disabled = true;
-            select.appendChild(option);
-        });
-
-        const defaultValue = settings.gridAlgorithms[i];
-        if (defaultValue && !used.includes(defaultValue)) {
-            select.value = defaultValue;
-        } else {
-            select.selectedIndex = 0;
-        }
-
-    }
 }
 
 function applyNewSettings() {
     console.log("Applying new settings...");
-    
+
     try {
-        // Update grid count
+        // Update grid settings
         settings.gridCount = parseInt(domElements.gridCountInput.value);
         console.log("New grid count:", settings.gridCount);
-        
-        // Update algorithms
+
         settings.gridAlgorithms = [];
         for (let i = 0; i < settings.gridCount; i++) {
             const select = document.getElementById(`gridAlgorithm${i}`);
             if (select) {
-                settings.gridAlgorithms.push(select.value);
-                console.log(`Grid ${i} algorithm:`, select.value);
+                // Prevent re-selecting the same algorithm
+                if (!settings.gridAlgorithms.includes(select.value)) {
+                    settings.gridAlgorithms.push(select.value);
+                    console.log(`Grid ${i} algorithm:`, select.value);
+                }
             }
         }
 
-        renderGrids();           // ← First render
-        
+        // Save settings
+        if (settings.save && typeof settings.save === 'function') {
+            settings.save();
+            console.log("Settings saved");
+        } else {
+            console.warn("settings.save() not available");
+        }
+
+        // Close the popup
         domElements.settingsPopup.style.display = 'none';
         console.log("Settings applied successfully");
     } catch (error) {

@@ -32,7 +32,6 @@ function updateSliderBackground() {
     slider.style.background = `linear-gradient(to right, var(--gradient) 0%, var(--gradient) ${percentage}%, rgba(255, 255, 255, 0.2) ${percentage}%, rgba(255, 255, 255, 0.2) 100%)`;
 }
 
-
 slider.addEventListener('input', updateSliderBackground);
 updateSliderBackground(); // Initial call on load
 
@@ -51,55 +50,35 @@ function updateGridSettingsUI() {
     const row2 = document.createElement('div');
     row2.className = 'grid-selection-row';
 
-    const selects = [];
-
     for (let i = 0; i < 5; i++) {
         const gridDiv = document.createElement('div');
         gridDiv.className = `grid-selection-item ${i >= count ? 'disabled' : ''}`;
-
+        
         const label = document.createElement('label');
         label.textContent = `Grid ${String.fromCharCode(65 + i)}:`;
-
+        
         const select = document.createElement('select');
         select.id = `gridAlgorithm${i}`;
         select.disabled = i >= count;
-        selects.push(select); // Store for post-population processing
 
+        algorithms.forEach(algorithm => {
+            const option = document.createElement('option');
+            option.value = algorithm.id;
+            option.textContent = algorithm.name;
+            select.appendChild(option);
+        });
+        
+        if (settings.gridAlgorithms[i]) select.value = settings.gridAlgorithms[i];
+        
         gridDiv.appendChild(label);
         gridDiv.appendChild(select);
+
         if (i < 3) row1.appendChild(gridDiv);
         else row2.appendChild(gridDiv);
     }
 
     domElements.gridSettings.appendChild(row1);
     domElements.gridSettings.appendChild(row2);
-
-    // Populate options after building all dropdowns
-    for (let i = 0; i < selects.length; i++) {
-        const select = selects[i];
-        const isDisabled = select.disabled;
-        if (isDisabled) continue;
-
-        const used = selects
-            .map(s => s.value)
-            .filter((val, idx) => idx !== i && val); // Already selected in others
-
-        algorithms.forEach(algorithm => {
-            const option = document.createElement('option');
-            option.value = algorithm.id;
-            option.textContent = algorithm.name;
-            if (used.includes(algorithm.id)) option.disabled = true;
-            select.appendChild(option);
-        });
-
-        const defaultValue = settings.gridAlgorithms[i];
-        if (defaultValue && !used.includes(defaultValue)) {
-            select.value = defaultValue;
-        } else {
-            select.selectedIndex = 0;
-        }
-
-    }
 }
 
 function applyNewSettings() {
@@ -120,8 +99,7 @@ function applyNewSettings() {
             }
         }
 
-        renderGrids();           // ← First render
-        
+        renderGrids();
         domElements.settingsPopup.style.display = 'none';
         console.log("Settings applied successfully");
     } catch (error) {

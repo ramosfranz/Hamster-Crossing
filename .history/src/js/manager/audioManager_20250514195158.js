@@ -69,19 +69,18 @@ class AudioManager {
         document.addEventListener('keydown', playHandler, { once: true });
     }
 
-async playMusic() {
-    if (this.bgMusic.src && this.volume > 0) {
-        try {
-            await this.bgMusic.play();
-            this.isPlaying = true;
-            console.log("Music started/resumed");
-        } catch (error) {
-            console.error("Playback failed:", error);
-            throw error;
+    async playMusic() {
+        if (!this.isPlaying && this.bgMusic.src && this.volume > 0) {
+            try {
+                await this.bgMusic.play();
+                this.isPlaying = true;
+                console.log("Music started playing");
+            } catch (error) {
+                console.error("Playback failed:", error);
+                throw error;
+            }
         }
     }
-}
-
 
   stopMusic(resetTime = true) {
     if (this.isPlaying) {

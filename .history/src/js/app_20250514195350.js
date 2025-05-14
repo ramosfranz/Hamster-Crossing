@@ -3,8 +3,11 @@ import { setupEventListeners, renderGrids } from './manager/domManager.js';
 import { setupSettingsEventListeners } from './popup/settingsPopUp.js';
 import { drawGrid, initializeVisualizer } from './animation/visualizer.js';
 import { loadSeedImages, startSeedAnimation } from './animation/seedAnimation.js';
+import { settings } from './manager/stateManager.js';
+import audioManager from './manager/audioManager.js';
 
 export function init() {
+     settings.load(); 
     loadSeedImages(() => {
         startSeedAnimation();
     });

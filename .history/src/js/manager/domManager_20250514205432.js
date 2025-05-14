@@ -40,6 +40,21 @@ export function setupEventListeners() {
         }, 0);
     });
 
+   /* domElements.settingsButton.addEventListener('click', () => {
+        domElements.settingsPopup.style.display = 'block';
+        updateSettingsUI();
+    });
+
+    domElements.closePopup.addEventListener('click', () => {
+        domElements.settingsPopup.style.display = 'none';
+    });
+
+    window.addEventListener('click', (event) => {
+        if (event.target === domElements.settingsPopup) {
+            domElements.settingsPopup.style.display = 'none';
+        }
+    }); */
+
     window.addEventListener('resize', () => {
         drawGrid();
         setupCanvasEventListeners();

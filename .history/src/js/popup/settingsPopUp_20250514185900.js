@@ -1,6 +1,7 @@
 import { settings } from '../manager/stateManager.js';
 import { renderGrids } from '../manager/domManager.js';
 import ThemeManager from '../manager/themeManager.js';
+import audioManager from '../manager/audioManager.js';
 
 const domElements = {
     settingsButton: document.getElementById('settingsButton'),
@@ -9,6 +10,7 @@ const domElements = {
     applySettings: document.getElementById('applySettings'),
     gridCountInput: document.getElementById('gridCount'),
     gridSettings: document.getElementById('gridSettings'),
+    volumeSlider: document.getElementById('volumeSlider'),
     hamsterDropdown: document.getElementById('hamsterDropdown'),
     slider: document.querySelector('.theme-slider')
 };
@@ -32,13 +34,14 @@ function updateSliderBackground() {
     slider.style.background = `linear-gradient(to right, var(--gradient) 0%, var(--gradient) ${percentage}%, rgba(255, 255, 255, 0.2) ${percentage}%, rgba(255, 255, 255, 0.2) 100%)`;
 }
 
-
 slider.addEventListener('input', updateSliderBackground);
 updateSliderBackground(); // Initial call on load
-
 function updateSettingsUI() {
+    domElements.volumeSlider.value = settings.volume;
+    domElements.hamsterDropdown.value = settings.hamster;
     domElements.gridCountInput.value = settings.gridCount;
-    updateGridSettingsUI(); 
+    updateGridSettingsUI();
+    updateHamsterDropdown(); 
 }
 
 function updateGridSettingsUI() {
@@ -51,61 +54,49 @@ function updateGridSettingsUI() {
     const row2 = document.createElement('div');
     row2.className = 'grid-selection-row';
 
-    const selects = [];
-
     for (let i = 0; i < 5; i++) {
         const gridDiv = document.createElement('div');
         gridDiv.className = `grid-selection-item ${i >= count ? 'disabled' : ''}`;
-
+        
         const label = document.createElement('label');
         label.textContent = `Grid ${String.fromCharCode(65 + i)}:`;
-
+        
         const select = document.createElement('select');
         select.id = `gridAlgorithm${i}`;
         select.disabled = i >= count;
-        selects.push(select); // Store for post-population processing
 
+        algorithms.forEach(algorithm => {
+            const option = document.createElement('option');
+            option.value = algorithm.id;
+            option.textContent = algorithm.name;
+            select.appendChild(option);
+        });
+        
+        if (settings.gridAlgorithms[i]) select.value = settings.gridAlgorithms[i];
+        
         gridDiv.appendChild(label);
         gridDiv.appendChild(select);
+
         if (i < 3) row1.appendChild(gridDiv);
         else row2.appendChild(gridDiv);
     }
 
     domElements.gridSettings.appendChild(row1);
     domElements.gridSettings.appendChild(row2);
-
-    // Populate options after building all dropdowns
-    for (let i = 0; i < selects.length; i++) {
-        const select = selects[i];
-        const isDisabled = select.disabled;
-        if (isDisabled) continue;
-
-        const used = selects
-            .map(s => s.value)
-            .filter((val, idx) => idx !== i && val); // Already selected in others
-
-        algorithms.forEach(algorithm => {
-            const option = document.createElement('option');
-            option.value = algorithm.id;
-            option.textContent = algorithm.name;
-            if (used.includes(algorithm.id)) option.disabled = true;
-            select.appendChild(option);
-        });
-
-        const defaultValue = settings.gridAlgorithms[i];
-        if (defaultValue && !used.includes(defaultValue)) {
-            select.value = defaultValue;
-        } else {
-            select.selectedIndex = 0;
-        }
-
-    }
 }
 
 function applyNewSettings() {
     console.log("Applying new settings...");
     
     try {
+        // Update volume
+        settings.volume = parseInt(domElements.volumeSlider.value);
+        console.log("New volume:", settings.volume);
+        
+        // Update hamster
+        settings.hamster = domElements.hamsterDropdown.value;
+        console.log("New hamster:", settings.hamster);
+        
         // Update grid count
         settings.gridCount = parseInt(domElements.gridCountInput.value);
         console.log("New grid count:", settings.gridCount);
@@ -120,14 +111,37 @@ function applyNewSettings() {
             }
         }
 
-        renderGrids();           // ← First render
+        // Apply audio settings
+        audioManager.setVolume(settings.volume); // Directly set volume
+        console.log("Audio volume updated");
         
+        // Apply hamster theme
+        ThemeManager.selectedHamster = settings.hamster;
+        console.log("Hamster theme updated");
+        
+        // Save settings if possible
+        if (settings.save && typeof settings.save === 'function') {
+            settings.save();
+            console.log("Settings saved");
+        } else {
+            console.warn("settings.save() not available");
+        }
+
+        renderGrids();
         domElements.settingsPopup.style.display = 'none';
         console.log("Settings applied successfully");
     } catch (error) {
         console.error("Error applying settings:", error);
     }
 }
+
+// Add event listener for volume changes
+function setupVolumeControls() {
+    domElements.volumeSlider.addEventListener('input', (e) => {
+        audioManager.setVolume(parseInt(e.target.value));
+    });
+}
+
 
 export function setupSettingsEventListeners() {
     // Debug: Verify elements exist
@@ -156,6 +170,8 @@ export function setupSettingsEventListeners() {
         console.log("Grid count changed");
         updateGridSettingsUI();
     });
+
+    setupVolumeControls();
 
     window.addEventListener('click', (event) => {
         if (event.target === domElements.settingsPopup) {

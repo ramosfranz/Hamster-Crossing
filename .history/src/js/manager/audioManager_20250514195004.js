@@ -69,19 +69,18 @@ class AudioManager {
         document.addEventListener('keydown', playHandler, { once: true });
     }
 
-async playMusic() {
-    if (this.bgMusic.src && this.volume > 0) {
-        try {
-            await this.bgMusic.play();
-            this.isPlaying = true;
-            console.log("Music started/resumed");
-        } catch (error) {
-            console.error("Playback failed:", error);
-            throw error;
+    async playMusic() {
+        if (!this.isPlaying && this.bgMusic.src && this.volume > 0) {
+            try {
+                await this.bgMusic.play();
+                this.isPlaying = true;
+                console.log("Music started playing");
+            } catch (error) {
+                console.error("Playback failed:", error);
+                throw error;
+            }
         }
     }
-}
-
 
   stopMusic(resetTime = true) {
     if (this.isPlaying) {
@@ -100,15 +99,7 @@ async playMusic() {
     settings.volume = value;
 
     if (value === 0 && this.isPlaying) {
-        this.stopMusic(false); // Pause without resetting
-    } else if (value > 0 && !this.isPlaying && !this.bgMusic.paused) {
-        // Music already loaded but paused → resume it
-        this.bgMusic.play().then(() => {
-            this.isPlaying = true;
-            console.log("Music resumed after unmute");
-        }).catch(err => {
-            console.warn("Failed to resume music:", err);
-        });
+        this.stopMusic(false); // 🧠 Don't reset position on mute
     }
 }
 

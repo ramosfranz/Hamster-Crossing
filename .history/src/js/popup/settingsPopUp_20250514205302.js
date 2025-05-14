@@ -33,6 +33,16 @@ function updateSliderBackground() {
 }
 
 
+function updateHeadingSize() {
+    const visibleGrids = document.querySelectorAll('#grids-container .canvas-container').length;
+    const heading = document.querySelector('h3');
+
+    if (heading) {
+        heading.style.fontSize = visibleGrids > 3 ? '1.4rem' : '2rem';
+    }
+}
+
+
 slider.addEventListener('input', updateSliderBackground);
 updateSliderBackground(); // Initial call on load
 

@@ -32,7 +32,6 @@ function updateSliderBackground() {
     slider.style.background = `linear-gradient(to right, var(--gradient) 0%, var(--gradient) ${percentage}%, rgba(255, 255, 255, 0.2) ${percentage}%, rgba(255, 255, 255, 0.2) 100%)`;
 }
 
-
 slider.addEventListener('input', updateSliderBackground);
 updateSliderBackground(); // Initial call on load
 
@@ -120,8 +119,7 @@ function applyNewSettings() {
             }
         }
 
-        renderGrids();           // ← First render
-        
+        renderGrids();
         domElements.settingsPopup.style.display = 'none';
         console.log("Settings applied successfully");
     } catch (error) {

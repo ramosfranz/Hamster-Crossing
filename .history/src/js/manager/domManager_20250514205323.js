@@ -40,6 +40,21 @@ export function setupEventListeners() {
         }, 0);
     });
 
+   /* domElements.settingsButton.addEventListener('click', () => {
+        domElements.settingsPopup.style.display = 'block';
+        updateSettingsUI();
+    });
+
+    domElements.closePopup.addEventListener('click', () => {
+        domElements.settingsPopup.style.display = 'none';
+    });
+
+    window.addEventListener('click', (event) => {
+        if (event.target === domElements.settingsPopup) {
+            domElements.settingsPopup.style.display = 'none';
+        }
+    }); */
+
     window.addEventListener('resize', () => {
         drawGrid();
         setupCanvasEventListeners();
@@ -97,11 +112,11 @@ export function renderGrids() {
 
 function updateHeadingSize() {
     const visibleGrids = document.querySelectorAll('#grids-container .canvas-container').length;
-    const headings = document.querySelectorAll('#grids-container .canvas-container h3');
+    const heading = document.querySelector('h3');
 
-    headings.forEach(heading => {
+    if (heading) {
         heading.style.fontSize = visibleGrids > 3 ? '1.4rem' : '2rem';
-    });
+    }
 }
 
 
