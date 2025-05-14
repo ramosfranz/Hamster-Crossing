@@ -121,7 +121,7 @@ h3 {
     border-radius: 5px;
     cursor: pointer;
     text-decoration: none;
-    z-index: 1000; /* Ensure they float above other content */
+    z-index: 100; /* Ensure they float above other content */
 }
 
 #backButton {
