@@ -34,12 +34,7 @@ aboutPopup.innerHTML = `
                 <div class="algorithmFullDescription">
                     <div class="descriptionContent">
                         <img src="assets/images/character_sprites/hamu_teach1.png" class="hamuTeachImage" id="hamuTeachImage">
-                        <p>
-                        1. Place sunflowers to block the hamster’s path.<br>
-                        2. Click "Generate New Grid" to create a random maze.<br>
-                        3. Hit "Run" to see how each algorithm explores the grid.<br>
-                        4. Click a book to learn about each algorithm’s strategy.<br><br>
-                        </p>
+                        <p>Click an algorithm to learn more about its role in Hamster Crossing!</p>
                     </div>
                 </div>
             </div>
