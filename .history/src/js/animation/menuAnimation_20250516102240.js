@@ -23,7 +23,7 @@ const merryFrames = [
 
 const mintFrames = [
     'assets/images/hamster_falling/mint_fall1.png',
-    'assets/images/hamster_falling/mint_fall2.png'
+    '/assets/images/hamster_falling/mint_fall2.png'
 ];
 
 let currentFrame = 0;
