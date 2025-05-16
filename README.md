@@ -16,7 +16,7 @@ Key Points: <br>
 
 This system targets students, educators, and algorithm enthusiasts by making complex algorithmic logic intuitive and engaging.
 
-Try it live: Hamster Crossing [https://hamstercrossing.netlify.app/]
+Try it live: [Hamster Crossing](https://hamstercrossing.netlify.app/)
 ---
 
 ## 🌻 Objectives
