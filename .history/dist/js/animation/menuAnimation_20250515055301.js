@@ -7,23 +7,23 @@ const bgMusic = document.getElementById("bgMusic");
 
 // Animation frames for each hamster
 const hamuFrames = [
-    'assets/images/hamster_falling/hamu_fall1.png',
-    'assets/images/hamster_falling/hamu_fall2.png'
+    '../src/public/hamster_falling/hamu_fall1.png',
+    '../src/public/hamster_falling/hamu_fall2.png'
 ];
 
 const berryFrames = [
-    'assets/images/hamster_falling/berry_fall1.png',
-    'assets/images/hamster_falling/berry_fall2.png'
+    '../src/public/hamster_falling/berry_fall1.png',
+    '../src/public/hamster_falling/berry_fall2.png'
 ];
 
 const merryFrames = [
-    'assets/images/hamster_falling/merry_fall1.png',
-    'assets/images/hamster_falling/merry_fall2.png'
+    '../src/public/hamster_falling/merry_fall1.png',
+    '../src/public/hamster_falling/merry_fall2.png'
 ];
 
 const mintFrames = [
-    'assets/images/hamster_falling/mint_fall1.png',
-    'assets/images/hamster_falling/mint_fall2.png'
+    '../src/public/hamster_falling/mint_fall1.png',
+    '../src/public/hamster_falling/mint_fall2.png'
 ];
 
 let currentFrame = 0;
